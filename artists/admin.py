@@ -3,8 +3,8 @@ from .models import *
 
 # Register your models here.
 
-admin.site.register(Artists)
+admin.site.register(Artist)
 
 admin.site.register(Gender)
 
-admin.site.register(Countries)
+admin.site.register(Country)
