@@ -1,18 +1,16 @@
 from rest_framework import serializers
 
-from artists.models import Artist, Gender, Country
+from artists.models import Artist
+
+class UserPublicSerializer(serializers.Serializer):
+    username = serializers.CharField(read_only=True)
+    this_is_not_real = serializers.CharField(read_only=True)
+    id = serializers.IntegerField(read_only=True)
 
 
 class ArtistSerializer(serializers.ModelSerializer):
-    gender = serializers.PrimaryKeyRelatedField(
-        queryset=Gender.objects.all(), many=False
-    )
-
-    country = serializers.PrimaryKeyRelatedField(
-        queryset=Country.objects.all(), many=False
-    )
-
+    owner = UserPublicSerializer(source='user',read_only=True)
     class Meta:
-        fields = ("pk", "name", "age", "gender", "country")
+        fields = ("pk","owner", "name", "age", "gender", "country")
         model = Artist
         depth = 1
