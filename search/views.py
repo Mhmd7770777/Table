@@ -33,4 +33,16 @@ class ArtistFilterView(generics.ListAPIView):
         else:
             results3= results2 
         return results3
+
+class ArtistSearchView(generics.ListAPIView):
+    queryset = Artist.objects.all()
+    serializer_class = ArtistSerializer
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        q = self.request.GET.get('q')
+        results = Artist.objects.none()
+        if q is not None:
+            results = qs.filter(name__icontains=q)
+        return results
         
