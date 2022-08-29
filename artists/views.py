@@ -1,12 +1,16 @@
-from rest_framework import generics
+from re import A
+from rest_framework import generics,authentication
 
 from artists.models import Artist
 from artists.serializers import ArtistSerializer
+from artists.mixins import StaffEditorPermissionMixin
 
 
-class ArtistsView(generics.ListCreateAPIView):
+class ArtistsView(StaffEditorPermissionMixin, generics.ListCreateAPIView):
     queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
+
+    authentication_classes = [authentication.SessionAuthentication]
 
 
 class ArtistFilterView(generics.ListAPIView):
