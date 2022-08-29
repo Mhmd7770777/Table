@@ -1,12 +1,19 @@
-from rest_framework import generics
+from re import A
+from rest_framework import generics, authentication, permissions
 
 from artists.models import Artist
 from artists.serializers import ArtistSerializer
 
 
 class ArtistsView(generics.ListCreateAPIView):
+
     queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
+    permission_classes = [
+        permissions.IsAdminUser,
+        permissions.IsAuthenticatedOrReadOnly,
+    ]
+    authentication_classes = [authentication.SessionAuthentication]
 
 
 class ArtistFilterView(generics.ListAPIView):
@@ -19,6 +26,7 @@ class ArtistFilterView(generics.ListAPIView):
         country = self.request.GET.get("country")
         gender = self.request.GET.get("gender")
         results = Artist.objects.all()
+        print(self.request.user.user_permissions)
 
         if age is not None:
             results = results.filter(age=age)
