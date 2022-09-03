@@ -9,10 +9,10 @@ class ArtistsView(generics.ListCreateAPIView):
     queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
 
-    """ permission_classes = [
+    permission_classes = [
         permissions.IsAdminUser,
         permissions.IsAuthenticatedOrReadOnly,
-    ] """
+    ]
 
     # authentication_classes = [authentication.SessionAuthentication]
 
